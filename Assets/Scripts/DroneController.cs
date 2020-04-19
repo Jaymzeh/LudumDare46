@@ -55,7 +55,7 @@ public class DroneController : MonoBehaviour
         }
 
         if (input.x != 0) { //Side strafe
-            rigidbody.AddForce(Mathf.Round(input.x) * (-transform.right) * forwardSpeed, ForceMode.Acceleration);
+            //rigidbody.AddForce(Mathf.Round(input.x) * (-transform.right) * (forwardSpeed/2), ForceMode.Acceleration);
 
             rigidbody.AddTorque(transform.up * (Mathf.Round(input.x) * turnSpeed), 
                 ForceMode.Impulse);
