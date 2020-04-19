@@ -17,6 +17,9 @@ public class DroneController : MonoBehaviour
     Animator anim;
     Rigidbody rigidbody;
 
+    public float power = 100f;
+    public float powerLossRate = 10f;
+    float elapsedTime = 0f;
 
     void Awake() {
         anim = GetComponent<Animator>();
@@ -36,7 +39,7 @@ public class DroneController : MonoBehaviour
         }
 
         if (input.x != 0) { //Side strafe
-            rigidbody.AddTorque(transform.up * (Mathf.Round(input.x) * turnSpeed), 
+            rigidbody.AddTorque(transform.up * (Mathf.Round(input.x*2) * turnSpeed), 
                 ForceMode.Impulse);
         }
 
@@ -67,6 +70,23 @@ public class DroneController : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         anim.SetFloat("Vertical", vertical);
         anim.SetFloat("Horizontal", horizontal);
+
+        if (powerLossRate != 0) {
+            elapsedTime += Time.deltaTime;
+
+            if (elapsedTime >= 1) {
+                power -= powerLossRate;
+                elapsedTime = 0;
+            }
+
+            if (power <= 0) {
+                rigidbody.useGravity = true;
+                rigidbody.mass = 200;
+                rigidbody.drag = 0;
+                rigidbody.angularDrag = 0;
+                this.enabled = false;
+            }
+        }
     }
 
 }

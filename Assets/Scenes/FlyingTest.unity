@@ -10552,16 +10552,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1631968901466971653, guid: 2bac9348fef234148ba94f0bce2959bf,
-        type: 3}
-      propertyPath: lightningObject
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1631968901466971653, guid: 2bac9348fef234148ba94f0bce2959bf,
-        type: 3}
-      propertyPath: coilTest
-      value: 
-      objectReference: {fileID: 8296172668793961855}
     - target: {fileID: 1631968901466971898, guid: 2bac9348fef234148ba94f0bce2959bf,
         type: 3}
       propertyPath: m_Name

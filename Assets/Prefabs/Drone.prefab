@@ -147,6 +147,7 @@ MonoBehaviour:
   turnSpeed: 5
   climbSpeed: 20
   selfRightingTorque: 150
+  power: 100
 --- !u!95 &1631968901466971652
 Animator:
   serializedVersion: 3
