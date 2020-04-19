@@ -56,12 +56,15 @@ public class DroneController : MonoBehaviour
 
         if (input.x != 0) { //Side strafe
             rigidbody.AddForce(Mathf.Round(input.x) * (-transform.right) * forwardSpeed, ForceMode.Acceleration);
-        }
 
-        if (input.w != 0) {  //turn
-            rigidbody.AddTorque(transform.up * (Mathf.Round(input.w) * turnSpeed), 
+            rigidbody.AddTorque(transform.up * (Mathf.Round(input.x) * turnSpeed), 
                 ForceMode.Impulse);
         }
+
+        //if (input.w != 0) {  //turn
+        //    rigidbody.AddTorque(transform.up * (Mathf.Round(input.w) * turnSpeed), 
+        //        ForceMode.Impulse);
+        //}
 
         if (input.y > 0) {  //climb
             rigidbody.AddForce(Vector3.up * climbSpeed, ForceMode.Acceleration);
