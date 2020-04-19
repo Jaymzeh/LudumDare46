@@ -25,25 +25,6 @@ public class DroneController : MonoBehaviour
 
     void GetInput() {
 
-        //if (Input.GetAxis("Vertical") != 0) {
-        //    transform.Translate(-Vector3.forward * Input.GetAxis("Vertical"), Space.Self);
-        //}
-
-        //if (Input.GetAxis("Horizontal") != 0) {
-        //    transform.Translate(-Vector3.right * Input.GetAxis("Horizontal"), Space.Self);
-        //}
-
-        //if (Input.GetAxis("Turn") > 0) {
-        //    transform.Rotate(0, turnSpeed, 0);
-        //}
-        //if (Input.GetAxis("Turn") < 0) {
-        //    transform.Rotate(0, -turnSpeed, 0);
-        //}
-
-        //if (Input.GetAxis("Climb") > 0) {
-        //    transform.Translate(Vector3.up * climbSpeed, Space.Self);
-        //}
-
         input = new Vector4(
             Input.GetAxis("Horizontal"),    //x
             Input.GetAxis("Climb"),         //y
@@ -55,16 +36,9 @@ public class DroneController : MonoBehaviour
         }
 
         if (input.x != 0) { //Side strafe
-            //rigidbody.AddForce(Mathf.Round(input.x) * (-transform.right) * (forwardSpeed/2), ForceMode.Acceleration);
-
             rigidbody.AddTorque(transform.up * (Mathf.Round(input.x) * turnSpeed), 
                 ForceMode.Impulse);
         }
-
-        //if (input.w != 0) {  //turn
-        //    rigidbody.AddTorque(transform.up * (Mathf.Round(input.w) * turnSpeed), 
-        //        ForceMode.Impulse);
-        //}
 
         if (input.y > 0) {  //climb
             rigidbody.AddForce(Vector3.up * climbSpeed, ForceMode.Acceleration);
@@ -72,14 +46,11 @@ public class DroneController : MonoBehaviour
         if (input.y < 0) {  //climb
             rigidbody.AddForce(Vector3.down * (climbSpeed*2), ForceMode.Acceleration);
         }
-        
-
     }
-
-    
 
     void FixedUpdate() {
 
+        //Self Balancing
         float angle = Vector3.Angle(transform.up, Vector3.up);
         if(angle > 0.01) {
 
@@ -87,21 +58,6 @@ public class DroneController : MonoBehaviour
             rigidbody.AddTorque(axis * angle * selfRightingTorque);
             Debug.Log("Self righting...");
         }
-
-    }
-
-    public void Balance() {
-
-
-
-
-        //float x = transform.rotation.x;
-        //float y = transform.rotation.y;
-        //float z = transform.rotation.z;
-
-        //Quaternion to = Quaternion.Euler(0, y, 0);
-
-        //transform.rotation = Quaternion.RotateTowards(transform.rotation, to, 0.5f);
     }
 
     public void Update() {
@@ -111,12 +67,6 @@ public class DroneController : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         anim.SetFloat("Vertical", vertical);
         anim.SetFloat("Horizontal", horizontal);
-        //Balance();
-
     }
-
-    
-
-    
 
 }
