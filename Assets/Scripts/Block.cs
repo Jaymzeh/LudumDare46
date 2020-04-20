@@ -5,7 +5,9 @@ using UnityEngine;
 public class Block : MonoBehaviour {
 
     
-    public Transform start;
+    public Transform Start {
+        get { return transform; }
+    }
     public Transform end;
 
 }

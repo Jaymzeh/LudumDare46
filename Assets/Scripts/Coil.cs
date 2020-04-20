@@ -6,6 +6,7 @@ public class Coil : MonoBehaviour {
 
     public GameObject idleLightning;
     public GameObject lightningTrail;
+    public float chargeLeft = 20;
 
     public GameObject drone;
 
@@ -13,13 +14,19 @@ public class Coil : MonoBehaviour {
         lightningTrail.SetActive(false);
     }
 
-    void Update() {
+    void FixedUpdate() {
         if (lightningTrail.active) {
             lightningTrail.transform.LookAt(drone.transform.position);
         }
+        if (chargeLeft <= 0)
+            lightningTrail.SetActive(false);
     }
 
     void OnTriggerEnter(Collider other) {
+
+        if (chargeLeft <= 0)
+            return;
+
         if (other.gameObject.layer == LayerMask.NameToLayer("Drone")) {
             idleLightning.SetActive(false);
             lightningTrail.SetActive(true);
@@ -28,10 +35,13 @@ public class Coil : MonoBehaviour {
     }
 
     void OnTriggerExit(Collider other) {
+        if (chargeLeft <= 0)
+            return;
         if (other.gameObject.layer == LayerMask.NameToLayer("Drone")) {
             idleLightning.SetActive(true);
             lightningTrail.SetActive(false);
             drone = null;
         }
     }
+
 }
