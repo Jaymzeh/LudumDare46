@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DroneController : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class DroneController : MonoBehaviour
     public float power = 100f;
     public float powerLossRate = 10f;
     float elapsedTime = 0f;
+
+    public Slider powerSlider;
 
     void Awake() {
         anim = GetComponent<Animator>();
@@ -61,6 +64,8 @@ public class DroneController : MonoBehaviour
             rigidbody.AddTorque(axis * angle * selfRightingTorque);
             Debug.Log("Self righting...");
         }
+
+        powerSlider.value = power / 100;
     }
 
     public void Update() {
@@ -76,6 +81,7 @@ public class DroneController : MonoBehaviour
 
             if (elapsedTime >= 1) {
                 power -= powerLossRate;
+                
                 elapsedTime = 0;
             }
 
