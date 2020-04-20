@@ -14,13 +14,15 @@ public class Dispenser : MonoBehaviour {
     public bool close;
 
     void Start() {
-        anim = GetComponent<Animator>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     public void Activate(bool isActive) {
         active = isActive;
 
-        anim.SetBool("Open", active);
+        if (active)
+            anim.SetBool("Open", true);
+
         StartCoroutine("RaiseTower", active);
     }
 
@@ -29,7 +31,7 @@ public class Dispenser : MonoBehaviour {
         float targetHeight = 0;
 
         if (raise) {
-            targetHeight = transform.position.y;
+            targetHeight = transform.position.y + towerHeight;
 
             activeTower = Instantiate(towerPrefabs[0], 
                 towerParent.position,   //match position
@@ -37,18 +39,19 @@ public class Dispenser : MonoBehaviour {
                 towerParent);           //set tower parent
 
             while(towerParent.position.y < targetHeight) {
-                towerParent.Translate(transform.up * (raiseSpeed*Time.deltaTime), Space.Self);
+                towerParent.Translate(Vector3.up * (raiseSpeed*Time.deltaTime), Space.World);
                 yield return null;
             }
 
         }
         else {
-            targetHeight = transform.position.y - towerHeight;
+            targetHeight = transform.position.y;
 
             while(towerParent.position.y > targetHeight) {
-                towerParent.Translate(-transform.up * (raiseSpeed*Time.deltaTime), Space.Self);
+                towerParent.Translate(-Vector3.up * (raiseSpeed*Time.deltaTime), Space.World);
                 yield return null;
             }
+            anim.SetBool("Open", false);
             Destroy(activeTower);
         }
     }
