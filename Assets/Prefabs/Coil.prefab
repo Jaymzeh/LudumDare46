@@ -4823,6 +4823,7 @@ GameObject:
   - component: {fileID: 4451680012959877869}
   - component: {fileID: 4451680012959877868}
   - component: {fileID: 4451680012959877871}
+  - component: {fileID: 7875331089720153109}
   m_Layer: 9
   m_Name: Lightning-Target
   m_TagString: Untagged
@@ -9567,6 +9568,21 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &7875331089720153109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4451680012959877870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e31a410f14cdfeb4da11fed0daccb6c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coil: {fileID: 4610885544131028626}
+  chargeAmount: 1
+  particleStream: {fileID: 4451680012959877868}
 --- !u!1 &5538524770676991892
 GameObject:
   m_ObjectHideFlags: 0
@@ -9691,6 +9707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46789977255f13542b9aa9a557aae19d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dispenser: {fileID: 0}
   idleLightning: {fileID: 7719197690258544146}
   lightningTrail: {fileID: 4451680012959877870}
   chargeLeft: 20

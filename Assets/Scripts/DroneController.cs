@@ -66,7 +66,8 @@ public class DroneController : MonoBehaviour
             Debug.Log("Self righting...");
         }
 
-        //powerSlider.value = power / 100;
+        if (powerSlider != null)
+            powerSlider.value = power / 100;
     }
 
     public void Update() {

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Coil : MonoBehaviour {
+public class Coil : Tower {
 
     public GameObject idleLightning;
     public GameObject lightningTrail;
     public float chargeLeft = 20;
 
     public GameObject drone;
+
 
     void Start() {
         lightningTrail.SetActive(false);
@@ -18,8 +19,10 @@ public class Coil : MonoBehaviour {
         if (lightningTrail.active) {
             lightningTrail.transform.LookAt(drone.transform.position);
         }
-        if (chargeLeft <= 0)
+        if (chargeLeft <= 0) {
             lightningTrail.SetActive(false);
+            dispenser.Activate(false);
+        }
     }
 
     void OnTriggerEnter(Collider other) {

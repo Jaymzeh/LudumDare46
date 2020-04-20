@@ -37,6 +37,7 @@ public class Dispenser : MonoBehaviour {
                 towerParent.position,   //match position
                 towerParent.rotation,   //match rotation
                 towerParent);           //set tower parent
+            activeTower.GetComponent<Tower>().Dispenser = this;
 
             while(towerParent.position.y < targetHeight) {
                 towerParent.Translate(Vector3.up * (raiseSpeed*Time.deltaTime), Space.World);
