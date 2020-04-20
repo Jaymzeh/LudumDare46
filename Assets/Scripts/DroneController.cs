@@ -23,6 +23,7 @@ public class DroneController : MonoBehaviour
     float elapsedTime = 0f;
 
     public Slider powerSlider;
+    public Image powerWarning;
 
     void Awake() {
         anim = GetComponent<Animator>();
@@ -71,18 +72,32 @@ public class DroneController : MonoBehaviour
     public void Update() {
 
         GetInput();
-        vertical = Input.GetAxis("Vertical");
-        horizontal = Input.GetAxis("Horizontal");
-        anim.SetFloat("Vertical", vertical);
-        anim.SetFloat("Horizontal", horizontal);
+
+        anim.SetFloat("Power", power);
+
+        if (power > 0) {
+
+            vertical = Input.GetAxis("Vertical");
+            horizontal = Input.GetAxis("Horizontal");
+            anim.SetFloat("Vertical", vertical);
+            anim.SetFloat("Horizontal", horizontal);
+        }
+        else {
+            vertical = 0;
+            horizontal = 0;
+        }
+        
 
         if (powerLossRate != 0) {
             elapsedTime += Time.deltaTime;
 
             if (elapsedTime >= 1) {
                 power -= powerLossRate;
-                
                 elapsedTime = 0;
+                if (power <= 25)
+                    powerWarning.enabled = !powerWarning.enabled;
+                else
+                    powerWarning.enabled = false;
             }
 
             if (power <= 0) {
@@ -90,6 +105,7 @@ public class DroneController : MonoBehaviour
                 rigidbody.mass = 200;
                 rigidbody.drag = 0;
                 rigidbody.angularDrag = 0;
+                anim.SetFloat("Power", 0);
                 this.enabled = false;
             }
         }
