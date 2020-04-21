@@ -25,12 +25,19 @@ public class DroneController : MonoBehaviour
     public Slider powerSlider;
     public Image powerWarning;
 
+    AudioSource audioSource;
+    public float maxPitch = 1.5f;
+    public float minPitch = 0.75f;
+
+    public GameObject pauseScreen;
+    public GameObject gameOverScreen;
     void Awake() {
         anim = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
-    void GetInput() {
+    void FixedUpdate() {
 
         input = new Vector4(
             Input.GetAxis("Horizontal"),    //x
@@ -38,25 +45,33 @@ public class DroneController : MonoBehaviour
             Input.GetAxis("Vertical"),      //z
             Input.GetAxis("Turn"));         //w
 
-        if (input.z != 0) { //forward movement
-            rigidbody.AddForce(Mathf.Round(input.z) * (-transform.forward) * forwardSpeed, ForceMode.Acceleration);
-        }
-
-        if (input.x != 0) { //Side strafe
-            rigidbody.AddTorque(transform.up * (Mathf.Round(input.x*2) * turnSpeed), 
-                ForceMode.Impulse);
-        }
 
         if (input.y > 0) {  //climb
             rigidbody.AddForce(Vector3.up * climbSpeed, ForceMode.Acceleration);
+            audioSource.pitch = 1.34f;
         }
-        if (input.y < 0) {  //climb
-            rigidbody.AddForce(Vector3.down * (climbSpeed*2), ForceMode.Acceleration);
+        else if (input.y < 0) {  //fall
+            rigidbody.AddForce(Vector3.down * (climbSpeed * 2), ForceMode.Acceleration);
+            audioSource.pitch = 0.75f;
         }
-    }
 
-    void FixedUpdate() {
+        if (input.z != 0) { //forward movement
+            rigidbody.AddForce(Mathf.Round(input.z) * (-transform.forward) * forwardSpeed, ForceMode.Acceleration);
 
+            audioSource.pitch += (input.z * 0.5f);
+
+        }
+
+        if (input.x != 0) { //Side strafe
+            rigidbody.AddTorque(transform.up * (Mathf.Round(input.x * 2) * turnSpeed),
+                ForceMode.Impulse);
+        }
+
+
+
+
+        audioSource.pitch = Mathf.Clamp(audioSource.pitch, minPitch, maxPitch);
+ 
         //Self Balancing
         float angle = Vector3.Angle(transform.up, Vector3.up);
         if(angle > 0.01) {
@@ -71,8 +86,6 @@ public class DroneController : MonoBehaviour
     }
 
     public void Update() {
-
-        GetInput();
 
         anim.SetFloat("Power", power);
 
@@ -95,10 +108,12 @@ public class DroneController : MonoBehaviour
             if (elapsedTime >= 1) {
                 power -= powerLossRate;
                 elapsedTime = 0;
-                if (power <= 25)
-                    powerWarning.enabled = !powerWarning.enabled;
-                else
-                    powerWarning.enabled = false;
+
+                if (powerWarning != null)
+                    if (power <= 25)
+                        powerWarning.enabled = !powerWarning.enabled;
+                    else
+                        powerWarning.enabled = false;
             }
 
             if (power <= 0) {
@@ -107,9 +122,26 @@ public class DroneController : MonoBehaviour
                 rigidbody.drag = 0;
                 rigidbody.angularDrag = 0;
                 anim.SetFloat("Power", 0);
+                audioSource.Stop();
+                gameOverScreen.SetActive(true);
                 this.enabled = false;
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+
+            if (!pauseScreen.active) {
+                Time.timeScale = 0;
+                pauseScreen.SetActive(true);
+            }
+            else {
+                Time.timeScale = 1;
+                pauseScreen.SetActive(false);
+            }
+
+            
+        }
+
     }
 
 }

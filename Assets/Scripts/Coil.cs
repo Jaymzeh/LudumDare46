@@ -9,19 +9,24 @@ public class Coil : Tower {
     public float chargeLeft = 20;
 
     public GameObject drone;
+    AudioSource audioSource;
 
 
     void Start() {
         lightningTrail.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
     }
 
     void FixedUpdate() {
         if (lightningTrail.active) {
             lightningTrail.transform.LookAt(drone.transform.position);
+            audioSource.Play();
         }
         if (chargeLeft <= 0) {
+            audioSource.Stop();
             lightningTrail.SetActive(false);
             dispenser.Activate(false);
+            this.enabled = false;
         }
     }
 
@@ -38,8 +43,6 @@ public class Coil : Tower {
     }
 
     void OnTriggerExit(Collider other) {
-        if (chargeLeft <= 0)
-            return;
         if (other.gameObject.layer == LayerMask.NameToLayer("Drone")) {
             idleLightning.SetActive(true);
             lightningTrail.SetActive(false);

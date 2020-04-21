@@ -25,13 +25,22 @@ public class Dispenser : MonoBehaviour {
 
         StartCoroutine("RaiseTower", active);
     }
+    public void Activate(bool isActive, float newHeight) {
+        towerHeight = newHeight;
+        Activate(isActive);
+    }
 
     IEnumerator RaiseTower(bool raise) {
 
         float targetHeight = 0;
 
+        
+
         if (raise) {
             targetHeight = transform.position.y + towerHeight;
+
+            if (towerParent.childCount != 0)
+                Destroy(towerParent.GetChild(0).gameObject);
 
             activeTower = Instantiate(towerPrefabs[0], 
                 towerParent.position,   //match position

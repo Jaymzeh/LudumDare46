@@ -4,19 +4,13 @@ using UnityEngine;
 
 public class Hoop : Tower {
 
-    bool active = true;
-
-    void OnTriggerEnter(Collider other) {
-
-        if (!active)
-            return;
+    void OnTriggerExit(Collider other) {
 
         if(other.gameObject.layer == LayerMask.NameToLayer("Drone")) {
 
             GameEvents.CURRENT.HoopTriggerEnter();
-
-            active = false;
             dispenser.Activate(false);
+            this.enabled = false;
         }
     }
 
